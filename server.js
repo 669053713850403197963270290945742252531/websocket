@@ -4,15 +4,22 @@ const wss = new WebSocketServer({ port: 8080 })
 const clients = new Map()
 
 wss.on("connection", (ws) => {
+    console.log("Client connected")
+
     let myUserId = null
 
     ws.on("message", (data) => {
+        console.log("Raw message:", data.toString())
+
         let msg
         try {
             msg = JSON.parse(data)
         } catch (e) {
+            console.log("Invalid JSON")
             return
         }
+
+        console.log("Parsed:", msg)
 
         if (msg.type === "identify") {
             myUserId = msg.userId
